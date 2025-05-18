@@ -1,0 +1,52 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+            "label": "build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-B",
+                "build",
+                "-G",
+                "MinGW Makefiles"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "配置 CMake 项目"
+        },
+		{
+            "label": "make",
+            "type": "shell",
+            "command": "mingw32-make.exe",
+            "args": [
+                "-C",
+                "build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "使用 MinGW 构建项目"
+        },
+		{
+            "label": "clean",
+            "type": "shell",
+            "command": "mingw32-make.exe",
+            "args": [
+                "-C",
+                "build",
+                "clean"
+            ],
+            "group": "build",
+            "detail": "清理构建目录"
+        },
+		{
+            "label": "build & make",
+            "dependsOn": ["build", "make"],
+            "detail": "配置并构建项目"
+        }
+	]
+}

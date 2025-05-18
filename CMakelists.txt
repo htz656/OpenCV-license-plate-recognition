@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.31.7)
+project(OpenCV_License_Plate_Recognition VERSION 0.1 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
+set(OpenCV_DIR "D:/Lib/opencv/opencv-4.11.0-mingw64/x64/mingw/lib")
+find_package(OpenCV REQUIRED)
+
+add_executable(main src/main.cpp)
+
+target_include_directories(main PUBLIC ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(main ${OpenCV_LIBS})
