@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/include/**",
+                "D:/Lib/opencv/opencv-4.11.0-mingw64/include/**"
             ],
             "defines": [
                 "_DEBUG",

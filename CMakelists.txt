@@ -10,7 +10,14 @@ endif()
 set(OpenCV_DIR "D:/Lib/opencv/opencv-4.11.0-mingw64/x64/mingw/lib")
 find_package(OpenCV REQUIRED)
 
-add_executable(main src/main.cpp)
+add_executable(main
+    src/main.cpp
+    src/PlateLocator.cpp
+)
 
-target_include_directories(main PUBLIC ${OpenCV_INCLUDE_DIRS})
+target_include_directories(main PUBLIC
+    ${OpenCV_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/include
+)
+
 target_link_libraries(main ${OpenCV_LIBS})

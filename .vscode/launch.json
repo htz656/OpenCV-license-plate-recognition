@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
             "args": [
-                "data/R.jpg"
+                "example_pics/R.jpg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -38,7 +38,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
             "args": [
-                "data/S.jpg"
+                "example_pics/S.jpg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
