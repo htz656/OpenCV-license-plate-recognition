@@ -5,12 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug R",
+            "name": "原始图像处理",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
             "args": [
-                "example_pics/R.jpg"
+                "--raw",
+                "--input-dir", "data/ann",
+                "--output-dir", "data/char_data",
+                "--image-size", "20"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -33,12 +36,73 @@
             "preLaunchTask": "build & make"
         },
         {
-            "name": "Debug S",
+            "name": "测试Locator",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
             "args": [
-                "example_pics/S.jpg"
+                "--image-path", "example_pics/R.jpg"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/Program Files/mingw64/bin/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build & make"
+        },
+        {
+            "name": "训练SVM",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/main.exe",
+            "args": [
+                "--train",
+                "--data-dir", "data/char_data",
+                "--model-out", "model/svm"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/Program Files/mingw64/bin/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build & make"
+        },
+        {
+            "name": "SVM预测",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/main.exe",
+            "args": [
+                "--predict",
+                "--image-size", "20",
+                "--model-dir", "model/svm",
+                "--image-path", "example_pics/S.jpg"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

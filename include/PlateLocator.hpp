@@ -35,6 +35,10 @@ public:
         int remain = 3
     ) const;
 
+    std::vector<cv::Mat> segmentCharacters(
+        const cv::Mat& plateImg
+    ) const;
+
 private:
     int maxWidth, maxHeight;
     cv::Size blurKernel;

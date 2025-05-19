@@ -1,4 +1,5 @@
 #include "PlateLocator.hpp"
+#include "image_utils.hpp"
 
 PlateLocator::PlateLocator(
     int targetMaxWidth, 
@@ -94,4 +95,55 @@ std::vector<cv::Rect> PlateLocator::locatePlates(
 
     if (plateRects.size() > remain) plateRects.resize(remain);
     return plateRects;
+}
+
+std::vector<cv::Mat> PlateLocator::segmentCharacters(const cv::Mat& plateImg) const {
+    std::vector<cv::Mat> characters;
+    if (plateImg.empty()) return characters;
+
+    cv::Mat resized = resizeToMinWidth(plateImg, 100);
+
+    cv::Mat gray;
+    cv::cvtColor(resized, gray, cv::COLOR_BGR2GRAY);
+
+    cv::Mat binary;
+    cv::threshold(gray, binary, 0, 255, cv::THRESH_BINARY + cv::THRESH_OTSU);
+    double meanVal = cv::mean(binary)[0];
+    if (cv::mean(binary)[0] > 128) cv::bitwise_not(binary, binary);
+
+    cv::Mat morph;
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 10));
+    cv::morphologyEx(binary, morph, cv::MORPH_CLOSE, kernel);
+
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(morph, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+    std::vector<cv::Rect> candidateRects;
+    for (const auto& contour : contours) {
+        cv::Rect rect = cv::boundingRect(contour);
+        float aspectRatio = static_cast<float>(rect.width) / rect.height;
+
+        int plateArea = morph.cols * morph.rows;
+        int rectArea = rect.width * rect.height;
+        float areaRatio = static_cast<float>(rectArea) / plateArea;
+
+        cv::Mat roi = morph(rect);
+        float fillRatio = static_cast<float>(cv::countNonZero(roi)) / (rect.width * rect.height);
+
+        if (areaRatio > 0.01f && aspectRatio > 0.4f && aspectRatio < 1.0f && fillRatio > 0.2f) {
+            candidateRects.push_back(rect);
+        }
+    }
+
+    std::sort(candidateRects.begin(), candidateRects.end(),
+              [](const cv::Rect& a, const cv::Rect& b) {
+                  return a.x < b.x;
+              });
+
+    for (const auto& rect : candidateRects) {
+        cv::Mat charBin = binary(rect);
+        characters.push_back(charBin.clone());
+    }
+
+    return characters;
 }
