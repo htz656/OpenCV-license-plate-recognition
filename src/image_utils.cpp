@@ -112,21 +112,29 @@ cv::Mat removeSmallComponents(const cv::Mat& binImg, int minSize) {
     return clean;
 }
 
-void resizeAndPadAndSave(const std::string& dataDir, const std::string& outDir, int maxWidth) {
+cv::Mat charImgProcess(cv::Mat charImg, int imgeSize) {
+    cv::Mat resizedChar = resizeToMaxWidth(charImg, imgeSize);
+    cv::Mat paddedChar = padToSquareAvgMin(resizedChar, imgeSize);
+    cv::Mat stretched = stretchGrayPercentile(paddedChar, 0.05, 0.95);
+    cv::Mat binaryChar = binarizeByOtsu(stretched, 10);
+    cv::Mat cleaned = removeSmallComponents(binaryChar, 3);
+
+    return cleaned;
+}
+
+void processAndSave(const std::string& dataDir, const std::string& outDir, int imgeSize) {
     for (const auto& classDir : std::filesystem::directory_iterator(dataDir)) {
         if (!classDir.is_directory()) continue;
         auto outClassDir = outDir + "/" + classDir.path().filename().string();
         std::filesystem::create_directories(outClassDir);
+
         for (const auto& imgPath : std::filesystem::directory_iterator(classDir)) {
             cv::Mat img = cv::imread(imgPath.path().string(), cv::IMREAD_GRAYSCALE);
             if (img.empty()) continue;
-            auto resized = resizeToMaxWidth(img, maxWidth);
-            auto padded = padToSquareAvgMin(resized, maxWidth);
-            cv::Mat stretched = stretchGrayPercentile(padded, 0.05, 0.95);  
-            // cv::imwrite(outClassDir + "/" + imgPath.path().filename().string(), stretched);                      
-            cv::Mat binarized = binarizeByOtsu(stretched, 10);  
-            cv::Mat cleaned = removeSmallComponents(binarized, 3);
-            cv::imwrite(outClassDir + "/" + imgPath.path().filename().string(), cleaned);
+
+            cv::Mat processedImg = charImgProcess(img, imgeSize);
+
+            cv::imwrite(outClassDir + "/" + imgPath.path().filename().string(), processedImg);
         }
     }
 }

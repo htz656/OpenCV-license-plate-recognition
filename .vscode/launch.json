@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "原始图像处理",
+            "name": "图像处理",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
@@ -36,42 +36,13 @@
             "preLaunchTask": "build & make"
         },
         {
-            "name": "测试Locator",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/main.exe",
-            "args": [
-                "--image-path", "example_pics/R.jpg"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "C:/Program Files/mingw64/bin/gdb.exe",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "build & make"
-        },
-        {
-            "name": "训练SVM",
+            "name": "训练模型",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
             "args": [
                 "--train",
-                "--data-dir", "data/char_data",
-                "--model-out", "model/svm"
+                "--data-dir", "data/char_data"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -94,15 +65,77 @@
             "preLaunchTask": "build & make"
         },
         {
-            "name": "SVM预测",
+            "name": "图像识别",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/main.exe",
             "args": [
                 "--predict",
                 "--image-size", "20",
-                "--model-dir", "model/svm",
-                "--image-path", "example_pics/S.jpg"
+                "--model-dir", "models/pca_svm_20250519_131805",
+                "--image-path", "example/S.jpg"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/Program Files/mingw64/bin/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build & make"
+        },
+        {
+            "name": "视频识别",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/main.exe",
+            "args": [
+                "--predict",
+                "--image-size", "20",
+                "--model-dir", "models/pca_svm_20250519_131805",
+                "--video-path", "example/plate_video.mp4"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/Program Files/mingw64/bin/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build & make"
+        },
+        {
+            "name": "摄像头识别",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/main.exe",
+            "args": [
+                "--predict",
+                "--image-size", "20",
+                "--model-dir", "models/pca_svm_20250519_131805",
+                "--camera-id", "0"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
